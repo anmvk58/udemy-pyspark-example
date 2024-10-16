@@ -69,9 +69,9 @@ if __name__ == '__main__':
         .withColumn("WatchDate", to_date("WatchDate", "MM/dd/yyyy")) \
         .withColumn("AvailableDtTm", to_timestamp("AvailableDtTm", "MM/dd/yyyy hh:mm:ss a")) \
 
-    df.printSchema()
+    # df.printSchema()
 
-    # Q1:How many distinct types of calls were made to the Fire Department?
+    # Q1. How many distinct types of calls were made to the Fire Department?
     # method 1 using spark sql:
     df.createOrReplaceTempView("fire_service_calls_view")
     q1_sql_df = spark.sql("""
@@ -85,11 +85,53 @@ if __name__ == '__main__':
     q1_sql_df.show()
 
     # method 2 using dataframe
-    df = df.where(df.CallTypeGroup.isNotNull()) \
+    q1_df = df.where(df.CallTypeGroup.isNotNull()) \
         .select("CallTypeGroup") \
-        .distinct() \
+        .distinct()
 
-    print('number of distinct CallTypeGroup = ' + df.count())
+    print('number of distinct CallTypeGroup = %d' % q1_df.count())
+
+
+    # Q2. What were distinct types of calls made to the Fire Department?
+    # method 1 using spark sql:
+    q2_sql_df = spark.sql("""
+            select 
+                distinct CallTypeGroup 
+            from
+                fire_service_calls_view
+            where 
+                CallTypeGroup is not null
+        """)
+    q2_sql_df.show()
+
+    # method 2 using dataframe
+    q2_df = df.where(df.CallTypeGroup.isNotNull()) \
+        .select("CallTypeGroup") \
+        .distinct()
+
+    q2_df.show()
+
+
+    #Q3. Find out all response for NumberOfAlarms greater than 3 times ?
+    # method 1: using spark sql
+    q3_sql_df = spark.sql("""
+            select 
+                CallNumber, RowID, NumberOfAlarms
+            from 
+                fire_service_calls_view
+            where 
+                NumberOfAlarms > 3
+            order by 
+                NumberOfAlarms desc
+    """)
+    q3_sql_df.show()
+
+    # method 2: using dataframe
+    q3_df = df.where(df.NumberOfAlarms > 3) \
+            .select("CallNumber", "RowID", "NumberOfAlarms") \
+            .orderBy("NumberOfAlarms", ascending=False)
+
+    q3_df.show()
 
     spark.stop()
 
