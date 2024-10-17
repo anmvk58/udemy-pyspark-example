@@ -1,9 +1,9 @@
 import os
 
-from babel.util import distinct
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 
+from example.list_anwser import *
 from utils.utils import get_spark_app_config
 from utils.logger import Log4j
 
@@ -42,7 +42,7 @@ if __name__ == '__main__':
         "Watch Date": "WatchDate",
         "Call Final Disposition": "CallFinalDisposition",
         "Available DtTm": "AvailableDtTm",
-        "Zipcode of Incident": "Zipcode",
+        "Zipcode of Incident": "ZipCode",
         "Station Area": "StationArea",
         "Final Priority": "FinalPriority",
         "ALS Unit": "ALSUnit",
@@ -60,7 +60,7 @@ if __name__ == '__main__':
         "Original Priority": "OriginalPriority",
         "Number of Alarms": "NumberOfAlarms",
         "Unit Type": "UnitType",
-        "Neighborhooods - Analysis Boundaries": "NeighborhooodsAnalysisBoundaries"
+        "Neighborhooods - Analysis Boundaries": "Neighborhooods"
     })
 
     # Correct data type for date column:
@@ -70,68 +70,40 @@ if __name__ == '__main__':
         .withColumn("AvailableDtTm", to_timestamp("AvailableDtTm", "MM/dd/yyyy hh:mm:ss a")) \
 
     # df.printSchema()
-
-    # Q1. How many distinct types of calls were made to the Fire Department?
-    # method 1 using spark sql:
+    df.show()
+    # create template view for spark Sql
     df.createOrReplaceTempView("fire_service_calls_view")
-    q1_sql_df = spark.sql("""
-        select 
-            count(distinct CallTypeGroup) as distinct_call_type_count 
-        from
-            fire_service_calls_view
-        where 
-            CallTypeGroup is not null
-    """)
-    q1_sql_df.show()
 
-    # method 2 using dataframe
-    q1_df = df.where(df.CallTypeGroup.isNotNull()) \
-        .select("CallTypeGroup") \
-        .distinct()
+    # question 1
+    # question_1(spark, df)
 
-    print('number of distinct CallTypeGroup = %d' % q1_df.count())
+    # question 2
+    # question_2(spark, df)
 
+    # question 3
+    # question_3(spark, df)
 
-    # Q2. What were distinct types of calls made to the Fire Department?
-    # method 1 using spark sql:
-    q2_sql_df = spark.sql("""
-            select 
-                distinct CallTypeGroup 
-            from
-                fire_service_calls_view
-            where 
-                CallTypeGroup is not null
-        """)
-    q2_sql_df.show()
+    # question 4
+    # question_4(spark, df)
 
-    # method 2 using dataframe
-    q2_df = df.where(df.CallTypeGroup.isNotNull()) \
-        .select("CallTypeGroup") \
-        .distinct()
+    # question 5
+    # question_5(spark, df)
 
-    q2_df.show()
+    # question 6
+    # question_6(spark, df)
 
+    # question 7
+    # question_7(spark, df)
 
-    #Q3. Find out all response for NumberOfAlarms greater than 3 times ?
-    # method 1: using spark sql
-    q3_sql_df = spark.sql("""
-            select 
-                CallNumber, RowID, NumberOfAlarms
-            from 
-                fire_service_calls_view
-            where 
-                NumberOfAlarms > 3
-            order by 
-                NumberOfAlarms desc
-    """)
-    q3_sql_df.show()
+    # question 8
+    # question_8(spark, df)
 
-    # method 2: using dataframe
-    q3_df = df.where(df.NumberOfAlarms > 3) \
-            .select("CallNumber", "RowID", "NumberOfAlarms") \
-            .orderBy("NumberOfAlarms", ascending=False)
+    # question 9
+    # question_9(spark, df)
 
-    q3_df.show()
+    # question 10
+    question_10(spark, df)
 
+    logger.info("Finished HelloSpark")
     spark.stop()
 

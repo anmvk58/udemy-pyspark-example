@@ -4,7 +4,7 @@ class Log4j(object):
         :param spark: SparkSession
         :type spark: pyspark.sql.session.SparkSession
         """
-        root_class = "com.anmv.spark_examples"
+        root_class = "com.anmv.spark.examples"
         conf = spark.sparkContext.getConf()
         app_name = conf.get("spark.app.name")
         log4j = spark._jvm.org.apache.log4j
