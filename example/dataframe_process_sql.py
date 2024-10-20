@@ -8,9 +8,9 @@ from utils.utils import get_spark_app_config
 from utils.logger import Log4j
 
 # Path for spark source folder (add because env in os do not set)
-os.environ["JAVA_HOME"] = "D:\\anmv2\\Environment\\Jdk1.8"
-os.environ["HADOOP_HOME"] = "D:\\anmv2\\Environment\\hadoop-3.3.6"
-os.environ["SPARK_HOME"] = "D:\\anmv2\\Environment\\Spark\\spark-3.5.3-bin-hadoop3"
+# os.environ["JAVA_HOME"] = "D:\\anmv2\\Environment\\Jdk1.8"
+# os.environ["HADOOP_HOME"] = "D:\\anmv2\\Environment\\hadoop-3.3.6"
+# os.environ["SPARK_HOME"] = "D:\\anmv2\\Environment\\Spark\\spark-3.5.3-bin-hadoop3"
 
 # Append pyspark  to Python Path
 # sys.path.append("D:\\anmv2\\Environment\\Spark\\spark-3.5.3-bin-hadoop3\\python")
@@ -19,8 +19,8 @@ os.environ["SPARK_HOME"] = "D:\\anmv2\\Environment\\Spark\\spark-3.5.3-bin-hadoo
 if __name__ == '__main__':
     conf = get_spark_app_config()
     spark = SparkSession.builder \
-                .config(conf=conf) \
-                .getOrCreate()
+        .config(conf=conf) \
+        .getOrCreate()
 
     # config for logging
     logger = Log4j(spark)
@@ -28,10 +28,9 @@ if __name__ == '__main__':
     logger.info("Starting HelloSpark")
 
     df = spark.read \
-            .option("header", "true") \
-            .option("inferSchema", "true")\
-            .csv("C:\\Users\\anmv2\\Downloads\\data_fire_department_2016.csv")
-
+        .option("header", "true") \
+        .option("inferSchema", "true") \
+        .csv("C:\\Users\\AnMV\\Downloads\\data_fire_department_2016.csv")
 
     # rename column to correct (remove blank space)
     df = df.withColumnsRenamed({
@@ -68,14 +67,14 @@ if __name__ == '__main__':
         .withColumn("CallDate", to_date("CallDate", "MM/dd/yyyy")) \
         .withColumn("WatchDate", to_date("WatchDate", "MM/dd/yyyy")) \
         .withColumn("AvailableDtTm", to_timestamp("AvailableDtTm", "MM/dd/yyyy hh:mm:ss a")) \
-
+ \
     # df.printSchema()
-    df.show()
+    # df.show()
     # create template view for spark Sql
     df.createOrReplaceTempView("fire_service_calls_view")
 
     # question 1
-    # question_1(spark, df)
+    question_1(spark, df)
 
     # question 2
     # question_2(spark, df)
@@ -102,8 +101,7 @@ if __name__ == '__main__':
     # question_9(spark, df)
 
     # question 10
-    question_10(spark, df)
+    # question_10(spark, df)
 
     logger.info("Finished HelloSpark")
     spark.stop()
-
