@@ -49,4 +49,11 @@ if __name__ == '__main__':
                 .sort(col("dob").desc())
                 )
 
+    # method 2, using expr
+    # final_df = raw_df.withColumn("year", expr("""
+    #          case when year < 21 then cast(year as int) + 2000
+    #          when year < 100 then cast(year as int) + 1900
+    #          else year
+    #          end"""))
+
     final_df.show()
