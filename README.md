@@ -21,5 +21,6 @@ spark.jars.packages  org.apache.spark:spark-avro_2.12:3.5.3
 - __5_dataframe_row__: example and work with Dataframe Rows and Unit Test
 - __6_mining_log_files__: example for mining log file 
 - __7_exploring_columns__: example for using columns by 2 ways 
+- __8_user_define_functions__: example for define your custom function 
 ---
 Learning to better position !!!
