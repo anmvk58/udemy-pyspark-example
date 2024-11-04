@@ -10,6 +10,8 @@ from utils.logger import Log4j
 
 # Path for spark source folder (add because env in os do not set)
 os.environ["JAVA_HOME"] = "D:\\anmv2\\Environment\\Jdk1.8"
+
+
 # os.environ["HADOOP_HOME"] = "D:\\anmv2\\Environment\\hadoop-3.3.6"
 # os.environ["SPARK_HOME"] = "D:\\anmv2\\Environment\\Spark\\spark-3.5.3-bin-hadoop3"
 
@@ -37,11 +39,11 @@ if __name__ == '__main__':
     logger.info("Create and use User Define Function in Spark Dataframe")
 
     survey_df = (spark.read
-                      .format("csv")
-                      .option("header", "true")
-                      .option("inferSchema", "true")
-                      .option("path","data/survey.csv")
-                      .load())
+                 .format("csv")
+                 .option("header", "true")
+                 .option("inferSchema", "true")
+                 .option("path", "data/survey.csv")
+                 .load())
 
     # Method 1:
     # register for function coding:

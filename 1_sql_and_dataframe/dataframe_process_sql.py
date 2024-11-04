@@ -2,7 +2,7 @@ import os
 
 from pyspark.sql import SparkSession
 
-from sql_and_dataframe.list_anwser import *
+from list_anwser import *
 from utils.utils import get_spark_app_config
 from utils.logger import Log4j
 
