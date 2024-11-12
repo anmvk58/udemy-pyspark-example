@@ -12,3 +12,6 @@
 # Spark Database and Table Data
 **/spark-warehouse
 **/spark-warehouse/**
+
+**/metastore_db
+**/metastore_db/**
