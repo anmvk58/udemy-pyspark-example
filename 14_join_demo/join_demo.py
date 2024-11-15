@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     logger.info("Example for join 2 dataframe")
 
-    orders_list = [("01", "02", 350, 1),
+    orders_list = [("01", "01", 350, 1),
                    ("01", "04", 580, 1),
                    ("01", "07", 320, 2),
                    ("02", "03", 450, 1),
@@ -47,9 +47,36 @@ if __name__ == '__main__':
 
     product_renamed_df = product_df.withColumnRenamed("qty", "reorder_qty")
 
-    join_expr = order_df.prod_id == product_df.prod_id
+    # Method 1: condition (IDE warning)
+    order_df.join(other=product_renamed_df, on=order_df.prod_id == product_renamed_df.prod_id, how="inner") \
+        .drop(product_renamed_df.prod_id) \
+        .select("order_id", "prod_id", "prod_name", "unit_price", "list_price", "qty") \
+        .show()
 
-    order_df.join(product_renamed_df, order_df.prod_id == product_renamed_df.prod_id, "inner") \
+    # Method 2: List column (2 df have same name on join column)
+    order_df.join(other=product_renamed_df, on=['prod_id'], how="inner") \
+        .drop(product_renamed_df.prod_id) \
+        .select("order_id", "prod_id", "prod_name", "unit_price", "list_price", "qty") \
+        .show()
+
+    # DEPRECATED !!!
+    # Method 3: Use dict to define list columns join from 2 df
+    # list_col_join = {
+    #     "prod_id": "prod_id",
+    #     "order_id": "prod_id"
+    # }
+    # order_df.join(other=product_renamed_df, on=list_col_join, how="inner") \
+    #     .drop(product_renamed_df.prod_id) \
+    #     .select("order_id", "prod_id", "prod_name", "unit_price", "list_price", "qty") \
+    #     .show()
+
+    # Join on multiple colums:
+    # [df.name == df3.name, df.age == df3.age]
+    condition_join = [
+        order_df.prod_id == product_renamed_df.prod_id,
+        order_df.order_id == product_renamed_df.prod_id
+    ]
+    order_df.join(other=product_renamed_df, on=condition_join, how="inner") \
         .drop(product_renamed_df.prod_id) \
         .select("order_id", "prod_id", "prod_name", "unit_price", "list_price", "qty") \
         .show()
