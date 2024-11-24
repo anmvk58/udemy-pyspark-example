@@ -23,8 +23,11 @@ spark.jars.packages  org.apache.spark:spark-avro_2.12:3.5.3
 - __7_exploring_columns__: example for using columns by 2 ways 
 - __8_user_define_functions__: example for define your custom function 
 - __9_misc_columns__: misc in process column 
-- __10_Aggregate__: demo aggregate function
-- __11_Grouping__: demo aggregate when group by ...
-- __12_WindowingProcess__: calculate in a group
+- __10_aggregate__: demo aggregate function
+- __11_grouping__: demo aggregate when group by ...
+- __12_windowing_process__: calculate in a group
+- __13_ranking_demo__: ranking result by use window
+- __14_join_demo__: demo joining 2 dataframe 
+- __15_performance_in_joining__: 2 way to increase performance when join
 ---
 Learning to better position !!!
